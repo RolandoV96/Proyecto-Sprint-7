@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import numpy as np
 
 car_data = pd.read_csv('vehicles_us.csv') # leer los datos
 
@@ -10,34 +9,24 @@ st.header('Relation Between price/kilometers')
 scat_button = st.button('Scatter diagram') # crear un botón
 build_histogram = st.button('histogram diagram') #crea un checkbox
 
-data = np.random.randn(1000)
-df = pd.DataFrame({'value': data})
-
-# 2. Definir los rangos y colores
-# Puedes definir los rangos de forma personalizada.
-# Aquí creamos rangos de ejemplo:
-df['range'] = pd.cut(df['value'], bins=[-3, -1, 0, 1, 3], labels=['Muy bajo', 'Bajo', 'Medio', 'Alto'])
-
-# 3. Crear el histograma con colores por rango
-fig = px.histogram(df, x="value", color="range",
-                   color_discrete_map={
-                       'Muy bajo': 'red',
-                       'Bajo': 'orange',
-                       'Medio': 'yellow',
-                       'Alto': 'green'
-                   },
-                   title="Histograma con colores por rango"
-                  )
-
-# 4. Mostrar el gráfico en Streamlit
-st.plotly_chart(fig, use_container_width=True)
+car_data['level'] = pd.cut(car_data['odometer'], # corta los datos dependiendo los valores de odometro
+                           bins=[0, 59999, 74999, 89999, 105000], # los acomoda en estas secciones
+                           labels=['Low', 'Medium', 'High', 'Really High'] # le coloca el siguiente label como una columna extra
+                           )
 
 if build_histogram: # si el checkbox esta seleccionado
          # escribir un mensaje
          st.write('Amount of Cars by their odometer count')
          
-         # crear un histograma
-         fig = px.histogram(car_data, x="odometer")
+         # crear un histograma con colores dependiendo su nivel de kilometraje
+         fig = px.histogram(car_data, x="odometer", color="level",
+                   color_discrete_map={
+                       'Low': 'green',
+                       'Medium': 'yellow',
+                       'High': 'orange',
+                       'Really High': 'red'
+                   }
+                  )
      
          # mostrar un gráfico Plotly interactivo
          st.plotly_chart(fig, use_container_width=True)
