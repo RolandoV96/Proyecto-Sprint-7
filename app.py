@@ -10,8 +10,8 @@ scat_button = st.button('Scatter diagram') # crear un botón
 build_histogram = st.button('histogram diagram') #crea un checkbox
 
 car_data['level'] = pd.cut(car_data['odometer'], # corta los datos dependiendo los valores de odometro
-                           bins=[0, 59999, 74999, 89999, 105000], # los acomoda en estas secciones
-                           labels=['Low', 'Medium', 'High', 'Really High'] # le coloca el siguiente label como una columna extra
+                           bins=[0, 59999, 74999, 89999, 105000, 999999], # los acomoda en estas secciones
+                           labels=['Low', 'Medium', 'High', 'Really High','Extremly high'] # le coloca el siguiente label como una columna extra
                            )
 
 if build_histogram: # si el checkbox esta seleccionado
@@ -24,7 +24,8 @@ if build_histogram: # si el checkbox esta seleccionado
                        'Low': 'green',
                        'Medium': 'yellow',
                        'High': 'orange',
-                       'Really High': 'red'
+                       'Really High': 'red',
+                       'Extremly high' : 'black'
                    }
                   )
      
